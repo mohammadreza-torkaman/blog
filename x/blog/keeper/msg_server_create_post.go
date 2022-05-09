@@ -13,6 +13,7 @@ func (k msgServer) CreatePost(goCtx context.Context, msg *types.MsgCreatePost) (
 		Title:   msg.Title,
 		Body:    msg.Body,
 	}
+	//todo bug
 	postID := k.AppendPost(ctx, post)
 
 	return &types.MsgCreatePostResponse{Id: postID}, nil
