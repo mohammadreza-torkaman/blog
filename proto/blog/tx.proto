@@ -7,7 +7,7 @@ option go_package = "github.com/mohammadreza-torkaman/blog/x/blog/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc CreatePost(MsgCreatePost) returns (MsgCreatePostResponse);
+  rpc CreatePost(MsgCreatePost) returns (MsgCreatePostResponse);
   rpc CreateComment(MsgCreateComment) returns (MsgCreateCommentResponse);
   rpc DeleteComment(MsgDeleteComment) returns (MsgDeleteCommentResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
