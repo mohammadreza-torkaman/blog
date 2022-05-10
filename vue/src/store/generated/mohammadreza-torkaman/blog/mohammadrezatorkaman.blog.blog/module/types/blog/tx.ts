@@ -19,9 +19,12 @@ export interface MsgCreateComment {
   postID: number;
   title: string;
   body: string;
+  id: number;
 }
 
-export interface MsgCreateCommentResponse {}
+export interface MsgCreateCommentResponse {
+  id: number;
+}
 
 const baseMsgCreatePost: object = { creator: "", title: "", body: "" };
 
@@ -177,6 +180,7 @@ const baseMsgCreateComment: object = {
   postID: 0,
   title: "",
   body: "",
+  id: 0,
 };
 
 export const MsgCreateComment = {
@@ -192,6 +196,9 @@ export const MsgCreateComment = {
     }
     if (message.body !== "") {
       writer.uint32(34).string(message.body);
+    }
+    if (message.id !== 0) {
+      writer.uint32(40).uint64(message.id);
     }
     return writer;
   },
@@ -214,6 +221,9 @@ export const MsgCreateComment = {
           break;
         case 4:
           message.body = reader.string();
+          break;
+        case 5:
+          message.id = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -245,6 +255,11 @@ export const MsgCreateComment = {
     } else {
       message.body = "";
     }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 
@@ -254,6 +269,7 @@ export const MsgCreateComment = {
     message.postID !== undefined && (obj.postID = message.postID);
     message.title !== undefined && (obj.title = message.title);
     message.body !== undefined && (obj.body = message.body);
+    message.id !== undefined && (obj.id = message.id);
     return obj;
   },
 
@@ -279,17 +295,25 @@ export const MsgCreateComment = {
     } else {
       message.body = "";
     }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 };
 
-const baseMsgCreateCommentResponse: object = {};
+const baseMsgCreateCommentResponse: object = { id: 0 };
 
 export const MsgCreateCommentResponse = {
   encode(
-    _: MsgCreateCommentResponse,
+    message: MsgCreateCommentResponse,
     writer: Writer = Writer.create()
   ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
     return writer;
   },
 
@@ -305,6 +329,9 @@ export const MsgCreateCommentResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -313,24 +340,35 @@ export const MsgCreateCommentResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgCreateCommentResponse {
+  fromJSON(object: any): MsgCreateCommentResponse {
     const message = {
       ...baseMsgCreateCommentResponse,
     } as MsgCreateCommentResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 
-  toJSON(_: MsgCreateCommentResponse): unknown {
+  toJSON(message: MsgCreateCommentResponse): unknown {
     const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<MsgCreateCommentResponse>
+    object: DeepPartial<MsgCreateCommentResponse>
   ): MsgCreateCommentResponse {
     const message = {
       ...baseMsgCreateCommentResponse,
     } as MsgCreateCommentResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 };
