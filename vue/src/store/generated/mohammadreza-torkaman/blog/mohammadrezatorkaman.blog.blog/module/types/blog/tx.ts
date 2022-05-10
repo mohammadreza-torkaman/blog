@@ -30,9 +30,12 @@ export interface MsgDeleteComment {
   creator: string;
   commentID: number;
   postID: number;
+  id: number;
 }
 
-export interface MsgDeleteCommentResponse {}
+export interface MsgDeleteCommentResponse {
+  id: number;
+}
 
 const baseMsgCreatePost: object = { creator: "", title: "", body: "" };
 
@@ -381,7 +384,12 @@ export const MsgCreateCommentResponse = {
   },
 };
 
-const baseMsgDeleteComment: object = { creator: "", commentID: 0, postID: 0 };
+const baseMsgDeleteComment: object = {
+  creator: "",
+  commentID: 0,
+  postID: 0,
+  id: 0,
+};
 
 export const MsgDeleteComment = {
   encode(message: MsgDeleteComment, writer: Writer = Writer.create()): Writer {
@@ -393,6 +401,9 @@ export const MsgDeleteComment = {
     }
     if (message.postID !== 0) {
       writer.uint32(24).uint64(message.postID);
+    }
+    if (message.id !== 0) {
+      writer.uint32(32).uint64(message.id);
     }
     return writer;
   },
@@ -412,6 +423,9 @@ export const MsgDeleteComment = {
           break;
         case 3:
           message.postID = longToNumber(reader.uint64() as Long);
+          break;
+        case 4:
+          message.id = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -438,6 +452,11 @@ export const MsgDeleteComment = {
     } else {
       message.postID = 0;
     }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 
@@ -446,6 +465,7 @@ export const MsgDeleteComment = {
     message.creator !== undefined && (obj.creator = message.creator);
     message.commentID !== undefined && (obj.commentID = message.commentID);
     message.postID !== undefined && (obj.postID = message.postID);
+    message.id !== undefined && (obj.id = message.id);
     return obj;
   },
 
@@ -466,17 +486,25 @@ export const MsgDeleteComment = {
     } else {
       message.postID = 0;
     }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 };
 
-const baseMsgDeleteCommentResponse: object = {};
+const baseMsgDeleteCommentResponse: object = { id: 0 };
 
 export const MsgDeleteCommentResponse = {
   encode(
-    _: MsgDeleteCommentResponse,
+    message: MsgDeleteCommentResponse,
     writer: Writer = Writer.create()
   ): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id);
+    }
     return writer;
   },
 
@@ -492,6 +520,9 @@ export const MsgDeleteCommentResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -500,24 +531,35 @@ export const MsgDeleteCommentResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgDeleteCommentResponse {
+  fromJSON(object: any): MsgDeleteCommentResponse {
     const message = {
       ...baseMsgDeleteCommentResponse,
     } as MsgDeleteCommentResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id);
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 
-  toJSON(_: MsgDeleteCommentResponse): unknown {
+  toJSON(message: MsgDeleteCommentResponse): unknown {
     const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<MsgDeleteCommentResponse>
+    object: DeepPartial<MsgDeleteCommentResponse>
   ): MsgDeleteCommentResponse {
     const message = {
       ...baseMsgDeleteCommentResponse,
     } as MsgDeleteCommentResponse;
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    } else {
+      message.id = 0;
+    }
     return message;
   },
 };
