@@ -48633,6 +48633,8 @@ definitions:
       id:
         type: string
         format: uint64
+  mohammadrezatorkaman.blog.blog.MsgDeleteCommentResponse:
+    type: object
   mohammadrezatorkaman.blog.blog.Params:
     type: object
     description: Params defines the parameters for the module.
