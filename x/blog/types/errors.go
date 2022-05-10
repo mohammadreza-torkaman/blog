@@ -8,5 +8,6 @@ import (
 
 // x/blog module sentinel errors
 var (
-	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrID         = sdkerrors.Register(ModuleName, 1100, "Post ID Not Exists For Comment")
+	ErrCommentOld = sdkerrors.Register(ModuleName, 1200, "More Than 100 Blocks Passed From The Post")
 )
